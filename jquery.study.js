@@ -197,7 +197,37 @@
             }
             return target;
     }
+//2017  9.12 : line 264
+jQuery.extend({
+
+    expando:"jQuery"+(version + Math.random()).replace(/\D/g,""),
+    isReady:true,
+    error:function(msg){
+        throw new Error(msg);
+    },
+
+    noop:function(){},
+
+    isFunction:function(obj){
+        return jQuery.type( obj ) === "function";
+    },
+
+    isWindow:function(obj){
+        return obj != null && obj === obj.window;//console.log(window.window === window); => true
+    },
+
+    isNumeric:function(obj){
+        var type = jQuery.type(obj);
+        /**
+         * isNaN(1) => false
+         * isNaN(obj-parseFloat(obj))是为了不把NaN排除在外，因为typeof NaN === number，但是isNaN(NaN) => true
+         * 所以为了不把NaN排除数字之外，用isNaN(obj - parseFloat(obj)) => false
+         * */
+        return (type === "number" || type === "string" ) && !isNaN(obj - parseFloat(obj));
+    }
 
 
+
+})
 
 });
