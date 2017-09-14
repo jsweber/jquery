@@ -40,8 +40,13 @@
     var hasOwn = class2type.hasOwnProperty;
 
     var fnToString = hasOwn.toString;
-
-    var ObjectFunctionString = fnToString.call(Object);
+/**
+* t.toString()
+*->   "function t(){console.log()}"
+* t.toString.call(Object)
+* ->  "function Object() { [native code] }"
+ */
+    var ObjectFunctionString = fnToString.call(Object);//不管什么函数，上下文换成Object执行返回的都是 function Object() { [native code] }
 
     var support = {};
 
@@ -243,10 +248,77 @@ jQuery.extend({
         ctor = hasOwn.call(proto,"constructor") && proto.constructor;
 
         return typeof ctor == "function" && fnToString.call(ctor) === ObjectFunctionString;
-    }
+    },
     //2017 9.14  line:321
+    isEmptyObject:function(obj){
+        for(var name in obj){
+            return false;
+        }
+        return true;
+    },
 
+    type:function(obj){
+        if(obj == null){
+            return obj+""
+        }
 
+        return typeof obj === "obj" || typeof obj === "function" ?
+        class2type[toString.call(obj)] || "object":
+        typeof obj;
+
+    },
+
+    globalEval:function(code){
+        DOMEval(code);
+    },
+
+    camelCase:function(string){
+        return string,replace(rmsPrefix,"ms-").replace(rdashAlpha,fcamelCase);
+    },
+
+    each:function(obj,callback){
+        var length,i=0;
+
+        if(isArrayLike(obj)){
+            length = obj.length;
+            for(;i<length;i++){
+                if(callback.call(obj[i],i,obj[i]) === false){
+                    break
+                }
+            }
+        }else{
+            for(var i in obj){
+                if(callback.call(obj[i],i,obj[i]) === false ){
+                    break;
+                }
+            }
+        }
+
+        return obj;
+    },
+
+    trim : function(text){
+        return text == null ?
+        "":
+        (text+"").replace(rtrim,"");
+    },
+
+    makeArray: function(arr,results){
+        var ret = results || [];
+
+        if( arr != null ){
+            if(isArrayLike( Object(arr) )){
+                jQuery.merge(ret,
+                    typeof arr === "string" ?
+                    [arr] : arr
+                )
+            }else{
+                push.call(ret,arr);
+            }
+        }
+        return ret
+    },
+//2017 9.15   : line 402
 
 })
 
