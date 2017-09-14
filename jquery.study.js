@@ -141,7 +141,7 @@
     };
     //2017  9.11 : line 195
     /**
-     * 功能为对象合并
+     * 功能为对象合并，所谓深拷贝就是把另一个对象上的属性值拷贝下来，当属性是引用类型时，通过复制其基础类型的值达到传值的目的
      * @param {boolean | object | array }   第一个参数既可以传入需要合并的对象也可以传入是否深拷贝
      * @param {object | array}  需要拷贝的对象
     */
@@ -180,6 +180,7 @@
                         }
 
                         if(deep && copy && (jQuery.isPlainObject( copy ) || (copyIsArray = Array.isArray(copy)))){
+                            //当资源上相应的属性是数组或者对象时，目标对象上相应也要初始化这个属性为对象或者数组
                             if(copyIsArray){
                                 copyIsArray = false;
                                 clone = src && Array.isArray(src) ? src: []
@@ -224,7 +225,26 @@ jQuery.extend({
          * 所以为了不把NaN排除数字之外，用isNaN(obj - parseFloat(obj)) => false
          * */
         return (type === "number" || type === "string" ) && !isNaN(obj - parseFloat(obj));
+    },
+
+    isPlainObject:function(obj){
+        var proto,ctor;
+
+        if(!obj || toString.call(obj) !== "[object object]"){
+            return false;
+        }
+
+        proto = getProto(obj);
+
+        if(!proto){
+            return true;
+        }
+
+        ctor = hasOwn.call(proto,"constructor") && proto.constructor;
+
+        return typeof ctor == "function" && fnToString.call(ctor) === ObjectFunctionString;
     }
+    //2017 9.14  line:321
 
 
 
