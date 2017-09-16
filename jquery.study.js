@@ -319,6 +319,40 @@ jQuery.extend({
         return ret
     },
 //2017 9.15   : line 402
+isAarray:function(elem,arr,i){
+    return arr == null ?
+    -1:indexOf.call(arr,elem,i)
+},
+
+merge:function(first,second){
+    var len = +second.length,
+        j=0;
+        i = first.length;
+
+    for(;j<len;j++){
+        first[i++] = second[j];
+    }
+    first.length = i;
+    return first;
+},
+
+grep:function(elems,callback,invert){
+    var callbackinverse,
+        matches = [],
+        i=0,
+        length = elems.length,
+        callbacExpect = !invert;
+
+    for(;i<Length;i++){
+        callbackinverse = !callback(elems[i],i);
+        if(callbackinverse !== callbacExpect){
+            matches.push(elems[i]);
+        }
+    }
+
+    return matches;
+},
+//2017.9.16   line:442
 
 })
 
