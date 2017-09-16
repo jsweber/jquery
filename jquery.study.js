@@ -203,7 +203,9 @@
             }
             return target;
     }
+
 //2017  9.12 : line 264
+//jQuery的静态方法
 jQuery.extend({
 
     expando:"jQuery"+(version + Math.random()).replace(/\D/g,""),
@@ -319,7 +321,7 @@ jQuery.extend({
         return ret
     },
 //2017 9.15   : line 402
-isAarray:function(elem,arr,i){
+isArray:function(elem,arr,i){
     return arr == null ?
     -1:indexOf.call(arr,elem,i)
 },
@@ -353,7 +355,67 @@ grep:function(elems,callback,invert){
     return matches;
 },
 //2017.9.16   line:442
+map:function(elems,callback,arg){
+    var len = elems.length,
+        i=0,
+        val,
+        ret = [];
+        if(isArrayLike(elems)){
+            for(;i<length;i++){
+                val = callback(elems[i],i,arg);
+                if(val) ret.push(val);
+            }
+        }else{
+            for(i in elems){
+                if(elems.hasOwnProperty(i)){
+                    val = callback(elems[i],i,arg);
+                    if(val) ret.push(val);
+                }
+            }
+        }
+        return concat.apply([],ret);
+},
+guid:1,
+//http://blog.csdn.net/liangklfang/article/details/48780731
+/**
+ * proxy作用是替换fn内部的上下文为context
+ * 所意return的就是fn这个函数本身，只是上下文切换了，用的是柯里化思想
+ * var to = $.proxy(function(){   console.log(arguments.length);   },o,1,2)
+ * to(3,4,5)
+ * 1，2因为闭包也被保存了，所意打印5；
+ */
+proxy:function(fn,context){
+    var tmp,args,proxy;
 
-})
+    if(typeof context === "string"){
+        tmp = fn[context];
+        context  = fn;
+        fn = tmp;
+    }
+
+    if(!jQuery.isFunction(fn)){
+        return undefined;
+    }
+
+    args = slice.call(arguments,2);
+    proxy = function(){
+        return fn.apply(context || this,arg.concat(slice.call(arguments)));
+    }
+
+    proxy,guid = fn.guid = fn.guid || jQuery.guid++;
+
+    return proxy;
+},
+
+now:Date.now,
+
+support:support
+});
+
+//2017  9.16  line 512
+
+
+
+
 
 });
