@@ -414,6 +414,18 @@ support:support
 
 //2017  9.16  line 512
 
+//todo 
+if(typeof Symbol === "function"){
+    jQuery.fn[Symbol.iterator] = arr[Symbol.iterator];
+}
+
+jQuery.each("Boolean Number String Function Array Date RegExp Object Error Symbol".split(" "),
+function(i,name){
+    class2type["[object" + name +"]"] = name.toLowerCase();
+})
+//2017 9 18  line522
+
+
 
 
 
