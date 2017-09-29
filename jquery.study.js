@@ -424,6 +424,85 @@ function(i,name){
     class2type["[object" + name +"]"] = name.toLowerCase();
 })
 //2017 9 18  line522
+function isArrayLike(obj){
+    var length = !!obj && "length" in obj && obj.length,
+        type = jQuery.type(obj);
+
+    if(type === "function" || jQuery.isWindow( obj )){
+        return false
+    }
+
+    return type === "array" || length === 0 ||
+        typeof length === "number" && length > 0 && (length - 1) in obj;//减法可以自动把字符串数字转化为数字，主要检查这个下标在不在这个数组或者类数组中，当length>0时 length-1肯定存在
+}
+
+//jQuery 获取dom元素的部分
+var Sizzle = 
+(function(window){
+    var i,
+        support,
+        Expr,
+        getText,
+        isXML,
+        tokenize,
+        compile,
+        select,
+        outermostContext,
+        sortInput,
+        hasDuplicate,
+
+        // Local document vars
+        setDocument,
+        document,
+        docElem,
+        documentIsHTML,
+        rbuggyQSA,
+        rbuggyMatches,
+        matches,
+        contains,
+
+        //具体的实例数据
+
+        expando = "sizzle" + 1 * new Date(),
+        preferredDoc = window.document,
+        dirruns = 0,
+        done = 0,
+        classCache = createCache(),
+        tokenCache = createCache(),
+        complierCache = createCache(),
+        sortOrder = function(a,b){
+            if(a === b){
+                hasDuplicate = true;
+            }
+            return 0
+        },
+
+        //instance method
+        hasOwn = ({}).hasOwnProperty,
+        arr = [],
+        pop = arr.pop,
+        push_native = arr.push,
+        push = arr.push,
+        slice = arr.slice,
+// https://jsperf.com/thor-indexof-vs-for/5
+//jquery说这个方法比原生的更快
+        indexOf = function(list,elem){
+            var i = 0,
+            len = list.length;
+            for(;i<len;i++){
+                if(list[i] === elem){
+                    return i
+                }
+            }
+            return -1;
+        }
+
+        //2017 9 29  line 608
+    ;
+
+})(window)
+
+
 
 
 
